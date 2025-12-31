@@ -48,11 +48,15 @@ form {
 
 #search-bar{
     border: 2px var(--softer-white) solid;
-    background-color: var(--prof-gray);
+    background-color: rgba(0, 0, 0, 0.2);
     width: 15rem;
     height: 2rem;
     color: var(--soft-white);
     padding-left: 0.2rem;
+}
+
+#search-bar:focus{
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 #search-button{
