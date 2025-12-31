@@ -4,7 +4,7 @@ let location = 'london';
 
 async function getWeather(location){
     try {
-        const weather = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=29GQTWHF9EU6UHLVPZKEFH43C`);
+        const weather = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=29GQTWHF9EU6UHLVPZKEFH43C`); //public key; no need to hide for this assignment
         const weatherData = await weather.json();
         console.log(weatherData);
     } catch (error) {
@@ -12,4 +12,4 @@ async function getWeather(location){
     }
 }
 
-getWeather(location);
+//getWeather(location);
