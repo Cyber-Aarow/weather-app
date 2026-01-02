@@ -2,7 +2,7 @@ import './main.css';
 
 //Left
 const cityName = document.querySelector('#city-name');
-const symbol = document.querySelector('#symbol-holder'); //Change
+const icon = document.querySelector('#main-icon');
 //Mid
 const currentTemp = document.querySelector('#current-temp');
 const conditions = document.querySelector('#conditions');
@@ -42,6 +42,19 @@ function displayCityName(weather){
     cityName.textContent = weather.resolvedAddress.split(',')[0]; //Make into array of 3; pull 0
 }
 
+async function displayIcon(weather){
+    try {
+        const icon_name = weather.currentConditions.icon;
+        const {default: icon_location} = await import(
+            `./icons/${icon_name}.svg`
+        );
+        icon.src = await icon_location;
+        icon.alt = icon_name;
+    } catch (error) {
+        alert(error);
+    }   
+}
+
 function displayCurrentTemp(weather){
     currentTemp.textContent = weather.currentConditions.temp;
 }
@@ -76,6 +89,7 @@ function displayUVIndex(weather){
 
 function displayWeather(weather){
     displayCityName(weather);
+    displayIcon(weather);
 
     displayCurrentTemp(weather);
     displayConditions(weather);
