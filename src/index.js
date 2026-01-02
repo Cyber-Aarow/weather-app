@@ -50,6 +50,14 @@ function  displayConditions(weather){
     conditions.textContent = weather.currentConditions.conditions;
 }
 
+function displayHigh(weather){
+    high.textContent = weather.days[0].tempmax;
+}
+
+function displayLow(weather){
+    low.textContent = weather.days[0].tempmin;
+}
+
 function displayFeelsLike(weather){
     feelsLike.textContent = weather.currentConditions.feelslike;
 }
@@ -68,8 +76,12 @@ function displayUVIndex(weather){
 
 function displayWeather(weather){
     displayCityName(weather);
+
     displayCurrentTemp(weather);
     displayConditions(weather);
+    displayHigh(weather);
+    displayLow(weather);
+
     displayFeelsLike(weather);
     displayHumidity(weather);
     displayChanceOfRain(weather);
