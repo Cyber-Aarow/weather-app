@@ -98,6 +98,7 @@ form {
 #name-holder > h1{
     margin-left: 0.5rem;
     font-size: 2rem;
+    text-decoration: underline;
 }
 
 #symbol-holder{
@@ -116,9 +117,12 @@ form {
     justify-content: center;
 }
 
-#current-temp{
+#temp-holder > h1 {
     font-size: 5rem;
     text-align: center;
+}
+
+#current-temp{
     position: relative;
 }
 
@@ -161,6 +165,8 @@ form {
 #main-right > div > span{
     height: 100%;
     flex: 2;
+    font-size: 3.7rem;
+    text-align: center;
 }
 
 /*Bottom two areas*/
