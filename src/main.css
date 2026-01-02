@@ -130,7 +130,7 @@ form {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 3rem;
+    height: fit-content;
     width: 100%;
 }
 
@@ -155,11 +155,37 @@ form {
     padding-bottom: 0.5rem;
 }
 
-#main-right > div{
-    width: 95%;
-    border-radius: 15px;
-    flex: 1;
-    display: flex;
+#main-right > div {
+  width: 95%;
+  border-radius: 15px;
+  border: solid var(--softer-white) 1px;
+  flex: 1;
+  display: flex;
+
+  
+}
+
+.bubble{
+    /* Separation + glass feel */
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+
+    position: relative;
+    overflow: hidden; /* required for sheen */
+}
+
+/* Sheen layer */
+.bubble::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.25) 0%,
+        rgba(255, 255, 255, 0.12) 20%,
+        rgba(255, 255, 255, 0.00) 45%
+    );
+    pointer-events: none;
 }
 
 #main-right > div > h3 {
