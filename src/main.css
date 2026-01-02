@@ -65,21 +65,6 @@ form {
     font-weight: bold;
 }
 
-
-
-/*Main area*/
-#main-area {
-    height: 50vh;
-    display: flex;
-
-}
-
-#main-area > div{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
 /*Make all degree symbols relative to their temps to center the temp proper*/
 .temp{
     position: relative;
@@ -89,6 +74,21 @@ form {
     position: absolute;
 }
 
+/*Main area*/
+#main-area {
+    height: 50vh;
+    display: grid;
+    grid-template-columns: 1fr auto 2rem 1fr;
+    align-items: center;
+}
+
+#main-area > div{
+    display: flex;
+    flex-direction: column;
+}
+
+
+
 /*Left*/
 #name-holder > h1{
     margin-left: 0.5rem;
@@ -96,7 +96,7 @@ form {
     text-decoration: underline;
 }
 
-#symbol-holder{
+#icon-holder{
     flex: 1;
 }
 
@@ -118,7 +118,8 @@ form {
 }
 
 #current-temp{
-    position: relative;
+    padding-right: 0rem;
+    overflow: visible;
 }
 
 #high-low-holder{
@@ -131,7 +132,7 @@ form {
 }
 
 #high-low-holder > p{
-    width: 30%;
+    width: 50%;
     text-align: center;
 }
 
