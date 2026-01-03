@@ -90,6 +90,9 @@ form {
 
 
 /*Left*/
+#main-left{
+    height: 100%;
+}
 #name-holder > h1{
     margin-left: 0.5rem;
     font-size: 2rem;
@@ -103,6 +106,7 @@ form {
 /*Center*/
 #main-center{
     align-items: center;
+    height: 100%;
 }
 
 #temp-holder{

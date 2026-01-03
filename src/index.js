@@ -14,8 +14,21 @@ const humidity = document.querySelector('#humidity');
 const chanceOfRain = document.querySelector('#chance-of-rain');
 const uvIndex = document.querySelector('#UV-index');
 
-let location = 'sanfrancisco';
+//Search
+const searchButton = document.querySelector('#search-button');
+const searchBar = document.querySelector('#search-bar');
 
+let location = 'sanfrancisco';
+updateWeather();
+
+searchButton.addEventListener('click', (e)=>{
+    e.preventDefault();
+    location = searchBar.value.toLowerCase().replaceAll(" ", '');
+    searchBar.value = "";
+    updateWeather();
+});
+
+//The two big ones
 async function getWeather(location){
     try {
         const weather = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=29GQTWHF9EU6UHLVPZKEFH43C`); //public key; no need to hide for this assignment
@@ -36,8 +49,7 @@ async function updateWeather(){
     }
 }
 
-
-
+//All the small ones for easier readability and debugging
 function displayCityName(weather){
     cityName.textContent = weather.resolvedAddress.split(',')[0]; //Make into array of 3; pull 0
 }
@@ -87,6 +99,7 @@ function displayUVIndex(weather){
     uvIndex.textContent = weather.currentConditions.uvindex;
 }
 
+//Conglomeration of the small ones
 function displayWeather(weather){
     displayCityName(weather);
     displayIcon(weather);
@@ -101,5 +114,3 @@ function displayWeather(weather){
     displayChanceOfRain(weather);
     displayUVIndex(weather);
 }
-
-updateWeather();
