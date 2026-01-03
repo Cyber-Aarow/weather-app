@@ -23,10 +23,20 @@ updateWeather();
 
 searchButton.addEventListener('click', (e)=>{
     e.preventDefault();
-    location = searchBar.value.toLowerCase().replaceAll(" ", '');
-    searchBar.value = "";
+    search();
     updateWeather();
 });
+
+//Search function
+function search(){
+    let temp = location;
+    try {
+        location = searchBar.value.toLowerCase().replaceAll(" ", '');
+        searchBar.value = "";
+    } catch (error) {
+        
+    }
+}
 
 //The two big ones
 async function getWeather(location){
@@ -51,7 +61,8 @@ async function updateWeather(){
 
 //All the small ones for easier readability and debugging
 function displayCityName(weather){
-    cityName.textContent = weather.resolvedAddress.split(',')[0]; //Make into array of 3; pull 0
+    let city = weather.resolvedAddress.split(',')[0]; //Make into array of 3; pull 0 (the city name)
+    cityName.textContent = city.charAt(0).toUpperCase() + city.slice(1); //Make the first letter capital (1-word cities were appearing lowercase)
 }
 
 async function displayIcon(weather){
