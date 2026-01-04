@@ -2,7 +2,7 @@ import './main.css';
 
 //Left
 const cityName = document.querySelector('#city-name');
-const icon = document.querySelector('#main-icon');
+const mainIcon = document.querySelector('#main-icon');
 //Mid
 const currentTemp = document.querySelector('#current-temp');
 const conditions = document.querySelector('#conditions');
@@ -65,14 +65,22 @@ function displayCityName(weather){
     cityName.textContent = city.charAt(0).toUpperCase() + city.slice(1); //Make the first letter capital (1-word cities were appearing lowercase)
 }
 
-async function displayIcon(weather){
+async function displayIcon(iconElement, iconName){
     try {
-        const icon_name = weather.currentConditions.icon;
-        const {default: icon_location} = await import(
-            `./icons/${icon_name}.svg`
+        const {default: iconLocation} = await import(
+            `./icons/${iconName}.svg`
         );
-        icon.src = await icon_location;
-        icon.alt = icon_name;
+        iconElement.src = await iconLocation;
+        iconElement.alt = iconName;
+    } catch (error) {
+        alert(error);
+    }
+}
+
+async function displayMainIcon(weather){
+    try {
+        const iconName = weather.currentConditions.icon;
+        displayIcon(mainIcon, iconName);
     } catch (error) {
         alert(error);
     }   
@@ -110,10 +118,61 @@ function displayUVIndex(weather){
     uvIndex.textContent = weather.currentConditions.uvindex;
 }
 
+//Hours
+function arrayMapNextHours(weather){
+    const now = weather.currentConditions.datetimeEpoch;
+    const nextHours = weather.days
+    .flatMap(day => day.hours)
+    .filter(hour => hour.datetimeEpoch > now)
+    .slice(0,7);
+
+    return nextHours;
+}
+
+function discernTime(hour){
+    let pm = false;
+    const num_string = hour.datetime.slice(0,2);
+    let num = Number(num_string);
+
+    if(num > 12){
+        num = num - 12;
+        pm = true;
+    }
+    
+    let time = num + ':00 ';
+    if(pm){
+        time += 'pm';
+    } 
+    else{
+        time += 'am';
+    }
+    return time;
+}
+
+function updateHourCard(hourElement, hour){
+    const time = hourElement.querySelector('.time');
+    const icon = hourElement.querySelector('img');
+    const temperature = hourElement.querySelector('.temperature');
+
+    time.textContent = discernTime(hour);
+    icon.src = displayIcon(icon, hour.icon);
+    temperature.textContent = hour.temp;
+}
+
+function displayNextHours(weather){
+    const nextHours = arrayMapNextHours(weather);
+    const hourElements = document.querySelectorAll('.hour');
+
+    nextHours.forEach((hour, i) => {
+        const hourCard = hourElements[i];
+        updateHourCard(hourCard, hour);
+    });
+}
+
 //Conglomeration of the small ones
 function displayWeather(weather){
     displayCityName(weather);
-    displayIcon(weather);
+    displayMainIcon(weather);
 
     displayCurrentTemp(weather);
     displayConditions(weather);
@@ -124,4 +183,6 @@ function displayWeather(weather){
     displayHumidity(weather);
     displayChanceOfRain(weather);
     displayUVIndex(weather);
+
+    displayNextHours(weather);
 }
