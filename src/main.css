@@ -221,7 +221,7 @@ li {
     height: 15vh;
 }
 
-.hour{
+.hour, .day{
     display: grid;
     grid-template-rows: auto 1fr auto;
     text-align: center;
