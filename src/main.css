@@ -239,3 +239,7 @@ li {
 .time, .weekday{
     font-size: 0.85rem;
 }
+
+.hour{
+    opacity: 0.85;
+}
