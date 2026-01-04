@@ -235,3 +235,7 @@ li {
     overflow: hidden;
     min-height: 0;
 }
+
+.time, .weekday{
+    font-size: 0.85rem;
+}
