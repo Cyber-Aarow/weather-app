@@ -66,7 +66,7 @@ form {
 }
 
 /*Make all degree symbols relative to their temps to center the temp proper*/
-.temp{
+.temperature-holder{
     position: relative;
 }
 
@@ -110,7 +110,7 @@ form {
 }
 
 #temp-holder{
-    margin-top: 20%;
+    margin-top: 60%;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -144,9 +144,7 @@ form {
     font-size: 1rem;
 }
 
-#high + .degree-symbol, #low + .degree-symbol{
-    top: 5px;
-}
+
 
 /*Right*/
 #main-right{
