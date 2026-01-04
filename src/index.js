@@ -169,6 +169,39 @@ function displayNextHours(weather){
     });
 }
 
+//Days
+function arrayMapNextWeek(weather){
+    return weather.days.slice(1,8);
+}
+
+function discernDay(day, timezone){
+    return new Date(day.datetimeEpoch * 1000)
+    .toLocaleDateString('en-US', {
+        weekday: 'short',
+        timeZone: timezone
+    });
+}
+
+function updateDayCard(dayElement, day, timezone){
+    const weekday = dayElement.querySelector('.weekday');
+    const icon = dayElement.querySelector('img');
+    const temperature = dayElement.querySelector('.temperature');
+
+    weekday.textContent = discernDay(day, timezone);
+    icon.src = displayIcon(icon, day.icon);
+    temperature.textContent = day.tempmax;
+}
+
+function displayNextWeek(weather){
+    const nextWeek = arrayMapNextWeek(weather);
+    const dayElements = document.querySelectorAll('.day');
+
+    nextWeek.forEach((day, i) => {
+        const dayCard = dayElements[i];
+        updateDayCard(dayCard, day, weather.timezone);
+    });
+}
+
 //Conglomeration of the small ones
 function displayWeather(weather){
     displayCityName(weather);
@@ -185,4 +218,5 @@ function displayWeather(weather){
     displayUVIndex(weather);
 
     displayNextHours(weather);
+    displayNextWeek(weather);
 }
