@@ -175,6 +175,7 @@ function discernTime(hour){
         num = num - 12;
         pm = true;
     }
+    else if(num === 0) num = 12;
     
     let time = num + ':00 ';
     if(pm){
