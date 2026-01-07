@@ -17,46 +17,83 @@ const uvIndex = document.querySelector('#UV-index');
 //Search
 const searchButton = document.querySelector('#search-button');
 const searchBar = document.querySelector('#search-bar');
+const errorsUI = document.querySelector('#errors');
 
 let location = 'sanfrancisco';
 updateWeather();
 
 searchButton.addEventListener('click', (e)=>{
     e.preventDefault();
-    search();
-    updateWeather();
+    if(search()){
+        updateWeather();
+    }
 });
 
 //Search function
 function search(){
-    let temp = location;
-    try {
-        location = searchBar.value.toLowerCase().replaceAll(" ", '');
-        searchBar.value = "";
-    } catch (error) {
-        
-    }
+    location = searchBar.value.toLowerCase().replaceAll(" ", '');
+    searchBar.value = "";
+    if(checkInputError()) return false;
+    return true;
 }
 
 //The two big ones
 async function getWeather(location){
     try {
         const weather = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=29GQTWHF9EU6UHLVPZKEFH43C`); //public key; no need to hide for this assignment
+        if(checkResponseError(weather)) return;
         const weatherData = await weather.json();
         console.log(weatherData);
         return weatherData;
     } catch (error) {
-        console.log(error);
+        handleError('Network Error: Please try again.');
     }
 }
 
 async function updateWeather(){
     try {
         const weather = await getWeather(location);
+        if(!weather) return;
         displayWeather(weather);
     } catch (error) {
-        alert(error);
+        handleError('Network Error: Please try again.');
     }
+}
+
+//Error checker
+function checkInputError(){
+    if(!location){
+        handleError('Please enter a city or location.');
+        return true;
+    }
+    else if(!/^[a-zA-Z\s]+$/.test(location)){
+        handleError('Please enter a valid location name.');
+        return true;
+    }
+    return false;
+}
+
+function checkResponseError(weather){
+    if(!weather.ok){
+        if(weather.status === 404 || weather.status === 400){
+            handleError('Error: Couldn\'t find that location.');
+            return true;
+        }
+        else if(weather.status >= 500){
+            handleError('Error: Weather service currently unavailable.');
+            return true;
+        }
+        else{
+            handleError('Error: Something went wrong.');
+            return true;
+        }
+    }
+    return false;
+}
+
+//Error handler
+function handleError(error){
+    errorsUI.textContent = error;
 }
 
 //All the small ones for easier readability and debugging
@@ -219,4 +256,6 @@ function displayWeather(weather){
 
     displayNextHours(weather);
     displayNextWeek(weather);
+
+    handleError("");
 }

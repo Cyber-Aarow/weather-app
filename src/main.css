@@ -45,6 +45,11 @@ body{
 
 form {
     display: flex;
+    flex-direction: column;
+}
+
+form div{
+    display: flex;
 }
 
 #search-bar{
@@ -64,6 +69,13 @@ form {
     height: 2rem;
     padding: 0 1rem;
     font-weight: bold;
+}
+
+#errors{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /*Make all degree symbols relative to their temps to center the temp proper*/
