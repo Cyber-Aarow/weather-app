@@ -184,7 +184,7 @@ function arrayMapNextHours(weather){
     const nextHours = weather.days
     .flatMap(day => day.hours)
     .filter(hour => hour.datetimeEpoch > now)
-    .slice(1,25);
+    .slice(0,24);
 
     return nextHours;
 }
@@ -210,13 +210,13 @@ function discernTime(hour){
     return time;
 }
 
-function updateHourCard(hourElement, hour){
+async function updateHourCard(hourElement, hour){
     const time = hourElement.querySelector('.time');
     const icon = hourElement.querySelector('img');
     const temperature = hourElement.querySelector('.temperature');
 
     time.textContent = discernTime(hour);
-    icon.src = displayIcon(icon, hour.icon);
+    await displayIcon(icon, hour.icon);
     temperature.textContent = hour.temp;
 }
 
@@ -243,13 +243,13 @@ function discernDay(day, timezone){
     });
 }
 
-function updateDayCard(dayElement, day, timezone){
+async function updateDayCard(dayElement, day, timezone){
     const weekday = dayElement.querySelector('.weekday');
     const icon = dayElement.querySelector('img');
     const temperature = dayElement.querySelector('.temperature');
 
     weekday.textContent = discernDay(day, timezone);
-    icon.src = displayIcon(icon, day.icon);
+    await displayIcon(icon, day.icon);
     temperature.textContent = day.tempmax;
 }
 
@@ -283,3 +283,61 @@ function displayWeather(weather){
 
     handleError("");
 }
+
+
+(() => {
+  // Helper
+  const looksBad = (v) =>
+    v && (typeof v !== "string" || v.includes("[object Promise]") || v.includes("object%20Promise"));
+
+  const warn = (label, v) => {
+    if (looksBad(v)) {
+      console.warn(`BAD URL into ${label}:`, v);
+      console.trace();
+    }
+  };
+
+  // fetch()
+  const _fetch = window.fetch;
+  window.fetch = function(input, init) {
+    warn("fetch(input)", input);
+    return _fetch.apply(this, arguments);
+  };
+
+  // XHR
+  const _open = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function(method, url) {
+    warn("XMLHttpRequest.open(url)", url);
+    return _open.apply(this, arguments);
+  };
+
+  // <img>.src
+  const imgDesc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, "src");
+  Object.defineProperty(HTMLImageElement.prototype, "src", {
+    get: imgDesc.get,
+    set(v) { warn("img.src", v); return imgDesc.set.call(this, v); }
+  });
+
+  // <script>.src
+  const scriptDesc = Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype, "src");
+  Object.defineProperty(HTMLScriptElement.prototype, "src", {
+    get: scriptDesc.get,
+    set(v) { warn("script.src", v); return scriptDesc.set.call(this, v); }
+  });
+
+  // <link>.href  (css, icons, preload, etc.)
+  const linkDesc = Object.getOwnPropertyDescriptor(HTMLLinkElement.prototype, "href");
+  Object.defineProperty(HTMLLinkElement.prototype, "href", {
+    get: linkDesc.get,
+    set(v) { warn("link.href", v); return linkDesc.set.call(this, v); }
+  });
+
+  // <a>.href (sometimes accidental)
+  const aDesc = Object.getOwnPropertyDescriptor(HTMLAnchorElement.prototype, "href");
+  Object.defineProperty(HTMLAnchorElement.prototype, "href", {
+    get: aDesc.get,
+    set(v) { warn("a.href", v); return aDesc.set.call(this, v); }
+  });
+
+  console.log("URL tripwires installed.");
+})();
