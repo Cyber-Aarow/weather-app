@@ -161,7 +161,7 @@ function arrayMapNextHours(weather){
     const nextHours = weather.days
     .flatMap(day => day.hours)
     .filter(hour => hour.datetimeEpoch > now)
-    .slice(0,7);
+    .slice(0,12);
 
     return nextHours;
 }
