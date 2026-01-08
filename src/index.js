@@ -19,6 +19,13 @@ const searchButton = document.querySelector('#search-button');
 const searchBar = document.querySelector('#search-bar');
 const errorsUI = document.querySelector('#errors');
 
+//Scroll
+const scroller = document.querySelector('#hours > ul');
+
+let down = false;
+let mousePosAtStart = 0;
+let scrollPosAtStart = 0;
+
 let location = 'sanfrancisco';
 updateWeather();
 
@@ -27,6 +34,26 @@ searchButton.addEventListener('click', (e)=>{
     if(search()){
         updateWeather();
     }
+});
+
+//All scroll events
+scroller.addEventListener('mousedown', (e) => {
+    down = true;
+    mousePosAtStart = e.clientX;
+    scrollPosAtStart = scroller.scrollLeft;
+    scroller.style.scrollSnapType = 'none';
+    e.preventDefault();
+});
+
+window.addEventListener('mousemove', (e) => {
+    if(!down) return;
+    scroller.scrollLeft = scrollPosAtStart - (e.clientX - mousePosAtStart);
+});
+
+window.addEventListener('mouseup', () => {
+    if(!down) return;
+    down = false;
+    scroller.style.scrollSnapType = 'x mandatory';
 });
 
 //Search function
@@ -160,8 +187,7 @@ function arrayMapNextHours(weather){
     const now = weather.currentConditions.datetimeEpoch;
     const nextHours = weather.days
     .flatMap(day => day.hours)
-    .filter(hour => hour.datetimeEpoch > now)
-    .slice(0,12);
+    .filter(hour => hour.datetimeEpoch > now);
 
     return nextHours;
 }

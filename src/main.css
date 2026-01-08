@@ -268,7 +268,7 @@ li {
 
 .hour{
     opacity: 0.85;
-    scroll-snap-align: start;
+    scroll-snap-align: start; /*Create a snap point at the start of each card*/
     flex: 0 0 4.3575rem;
 }
 
@@ -282,6 +282,7 @@ li {
     scroll-snap-type: x mandatory;
     scrollbar-gutter: stable both-edges;
     user-select: none; /*Stop highlighting the text*/
+    touch-action: pan-x;
 }
 
 #hours > ul, #hours .hour *{
