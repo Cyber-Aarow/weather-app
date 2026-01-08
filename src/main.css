@@ -281,6 +281,19 @@ li {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-gutter: stable both-edges;
+    user-select: none; /*Stop highlighting the text*/
+}
+
+#hours > ul, #hours .hour *{
+    cursor: grab;
+}
+
+#hours > ul:active, #hours .hour *:active{
+    cursor: grabbing;
+}
+
+#hours img{
+    pointer-events: none; /*Stop grabbing the icons*/
 }
 
 #hours > ul::-webkit-scrollbar{
