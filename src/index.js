@@ -134,20 +134,16 @@ async function displayIcon(iconElement, iconName){
         const {default: iconLocation} = await import(
             `./icons/${iconName}.svg`
         );
-        iconElement.src = await iconLocation;
+        iconElement.src = iconLocation;
         iconElement.alt = iconName;
     } catch (error) {
-        alert(error);
+        console.error('Icon load failed: ', iconName, error);
     }
 }
 
 async function displayMainIcon(weather){
-    try {
-        const iconName = weather.currentConditions.icon;
-        displayIcon(mainIcon, iconName);
-    } catch (error) {
-        alert(error);
-    }   
+    const iconName = weather.currentConditions.icon;
+    await displayIcon(mainIcon, iconName); 
 }
 
 function displayCurrentTemp(weather){
@@ -187,7 +183,8 @@ function arrayMapNextHours(weather){
     const now = weather.currentConditions.datetimeEpoch;
     const nextHours = weather.days
     .flatMap(day => day.hours)
-    .filter(hour => hour.datetimeEpoch > now);
+    .filter(hour => hour.datetimeEpoch > now)
+    .slice(1,25);
 
     return nextHours;
 }

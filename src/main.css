@@ -266,6 +266,7 @@ li {
     font-size: 0.85rem;
 }
 
+/*Mainly scroller stuff*/
 .hour{
     opacity: 0.85;
     scroll-snap-align: start; /*Create a snap point at the start of each card*/
@@ -275,6 +276,7 @@ li {
 #hours{
     overflow: hidden;
     box-sizing: border-box;
+    position: relative;
 }
 
 #hours > ul{
@@ -299,4 +301,20 @@ li {
 
 #hours > ul::-webkit-scrollbar{
     display: none;
+}
+
+/* right-edge hint */
+#hours::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3rem;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(
+        to left, 
+        rgba(255, 255, 255, 0.35),
+        rgba(255, 255, 255, 0)
+    );
 }
