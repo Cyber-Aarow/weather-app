@@ -181,12 +181,12 @@ function displayUVIndex(weather){
 //Hours
 function arrayMapNextHours(weather){
     const now = weather.currentConditions.datetimeEpoch;
-    const nextHours = weather.days
-    .flatMap(day => day.hours)
-    .filter(hour => hour.datetimeEpoch > now)
-    .slice(0,24);
+    const nextHour = Math.floor(now / 3600) * 3600 + 3600;
 
-    return nextHours;
+    return weather.days
+    .flatMap(day => day.hours)
+    .filter(hour => hour.datetimeEpoch >= nextHour)
+    .slice(0,24);
 }
 
 function discernTime(hour){
